@@ -1,0 +1,92 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+// 导入MobSDK
+apply plugin: 'com.mob.sdk'
+apply plugin: 'com.huawei.agconnect'
+
+MobSDK {
+    appKey "31a0e362b5d10"
+    appSecret "e9eca6e415ade03f60befb0b7bd41f15"
+
+    //配置MobPush
+    MobPush {
+        //配置厂商推送（可选配置，不需要厂商推送可不配置，需要哪些厂商推送只需配置哪些厂商配置即可）
+        devInfo {
+            //配置小米厂商推送
+            XIAOMI {
+                appId "2882303761518859892"
+                appKey "5651885960892"
+            }
+
+            //配置华为厂商推送
+            HUAWEI {
+                appId "103405637"
+            }
+        }
+    }
+}
+
+android {
+    compileSdkVersion 29
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.mz.flutter_mob_push"
+        minSdkVersion 17
+        targetSdkVersion 29
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'MobPush'
+            keyPassword '123456'
+            storeFile file('FluuterMobPush.jks')
+            storePassword '123456'
+        }
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.huawei.hms:push:4.0.4.301'
+}
+
+flutter {
+    source '../..'
+}
