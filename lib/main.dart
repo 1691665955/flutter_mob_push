@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobpush_plugin/mobpush_custom_message.dart';
 import 'package:mobpush_plugin/mobpush_plugin.dart';
 import 'One.dart';
 import 'Two.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'Setup.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,7 +33,6 @@ class MobPushPage extends StatefulWidget {
 class _MobPushPageState extends State<MobPushPage> {
 
   String _content = "MobPush";
-  String _content1 = "";
 
   @override
   void initState() {
@@ -48,11 +47,11 @@ class _MobPushPageState extends State<MobPushPage> {
     const methodChannelName = "MZMobPush_MethodChannel";
     MethodChannel methodChannel = MethodChannel(methodChannelName);
     eventChannel.receiveBroadcastStream().listen((event) {
-      setState(() {
-        _content = event;
-      });
       var data = json.decode(event);
       if (data.length > 0) {
+        setState(() {
+          _content = event;
+        });
         String page = data[0]["page"];
         switch(page) {
           case "One":
@@ -83,21 +82,21 @@ class _MobPushPageState extends State<MobPushPage> {
     MobpushPlugin.addPushReceiver((event) {
       print(event);
       Map<String, dynamic> eventMap = json.decode(event);
-      Map<String, dynamic> result = eventMap['result']["extrasMap"];
-      String page = result["page"];
-      switch(page) {
-        case "One":
-          Navigator.push(context, MaterialPageRoute(builder: (context) => OnePage()));
-          break;
-        case "Two":
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TwoPage()));
-          break;
+      if (eventMap["action"] == 2) {
+        Map<String, dynamic> result = eventMap['result']["extrasMap"];
+        String page = result["page"];
+        switch(page) {
+          case "One":
+            Navigator.push(context, MaterialPageRoute(builder: (context) => OnePage()));
+            break;
+          case "Two":
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TwoPage()));
+            break;
+        }
       }
     }, (event) {
       print(event);
     });
-    //设置别名
-    MobpushPlugin.setAlias("12345678");
   }
 
   @override
@@ -105,12 +104,16 @@ class _MobPushPageState extends State<MobPushPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("MobPush"),
+        actions: [
+          IconButton(icon: Icon(Icons.settings), onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SetupPage()));
+          })
+        ],
       ),
       body: Center(
         child: Column(
           children: [
             Text(_content,style: TextStyle(fontSize: 18),),
-            Text(_content1,style: TextStyle(fontSize: 18),)
           ],
         ),
       ),
