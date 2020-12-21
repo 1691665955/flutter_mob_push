@@ -80,7 +80,7 @@ class _MobPushPageState extends State<MobPushPage> {
     //更新隐私权限状态
     MobpushPlugin.updatePrivacyPermissionStatus(true);
 
-    //removePushReceiver和延时addPushReceiver处理app点击返回按钮退出后收不到推送的问题
+    //removePushReceiver和延时addPushReceiver处理app点击返回按钮退出后收到推送获取不到额外参数的问题
 
     //推送监听
     Future.delayed(Duration(milliseconds: 500),(){
