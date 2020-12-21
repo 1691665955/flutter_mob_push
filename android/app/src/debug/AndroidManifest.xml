@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mz.flutter_mob_push">
+    package="com.mz.flutter_mob_push" android:versionCode="2" android:versionName="1.0.1">
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->

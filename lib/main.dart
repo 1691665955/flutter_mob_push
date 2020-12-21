@@ -68,9 +68,7 @@ class _MobPushPageState extends State<MobPushPage> {
     });
   }
 
-  _initMobPush() {
-    //更新隐私权限状态
-    MobpushPlugin.updatePrivacyPermissionStatus(true);
+  _initMobPush() async {
     if (Platform.isIOS) {
       MobpushPlugin.setCustomNotification();
       MobpushPlugin.setAPNsForProduction(false);
@@ -78,25 +76,37 @@ class _MobPushPageState extends State<MobPushPage> {
     MobpushPlugin.setClickNotificationToLaunchMainActivity(true);
     //Android应用处于前台时隐藏通知
     // MobpushPlugin.setAppForegroundHiddenNotification(true);
+    MobpushPlugin.removePushReceiver();
+    //更新隐私权限状态
+    MobpushPlugin.updatePrivacyPermissionStatus(true);
+
+    //removePushReceiver和延时addPushReceiver处理app点击返回按钮退出后收不到推送的问题
+
     //推送监听
-    MobpushPlugin.addPushReceiver((event) {
-      print(event);
-      Map<String, dynamic> eventMap = json.decode(event);
-      if (eventMap["action"] == 2) {
-        Map<String, dynamic> result = eventMap['result']["extrasMap"];
-        String page = result["page"];
-        switch(page) {
-          case "One":
-            Navigator.push(context, MaterialPageRoute(builder: (context) => OnePage()));
-            break;
-          case "Two":
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TwoPage()));
-            break;
-        }
-      }
-    }, (event) {
-      print(event);
+    Future.delayed(Duration(milliseconds: 500),(){
+      MobpushPlugin.addPushReceiver(_onEvent, _onError);
     });
+  }
+
+  _onEvent(Object event) {
+    print(event);
+    Map<String, dynamic> eventMap = json.decode(event);
+    if (eventMap["action"] == 2) {
+      Map<String, dynamic> result = eventMap['result']["extrasMap"];
+      String page = result["page"];
+      switch(page) {
+        case "One":
+          Navigator.push(context, MaterialPageRoute(builder: (context) => OnePage()));
+          break;
+        case "Two":
+          Navigator.push(context, MaterialPageRoute(builder: (context) => TwoPage()));
+          break;
+      }
+    }
+  }
+
+  _onError(Object event) {
+    print(event);
   }
 
   @override
