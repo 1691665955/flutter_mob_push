@@ -6,7 +6,7 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="flutter_mob_push"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -50,12 +50,33 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-    </application>
+        <meta-data
+            android:name="com.mob.mobpush.debugLevel"
+            android:value="4" />
 
+<!--        <service-->
+<!--            android:name="com.mob.pushsdk.plugins.huawei.HuaweiPushService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+<!--        -->
+    </application>
+    
     //允许相册权限(本地访问)
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     //允许本地存储权限
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     //允许网络权限
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--检测网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--检测 Wi-Fi 状态-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--为了获取用户手机的 IMEI，用来唯一的标识用户。-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--如果是Android 8.0，应用编译配置的 targetSdkVersion>=26，请务必添加以下权限 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
 </manifest>

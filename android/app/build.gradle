@@ -86,7 +86,7 @@ android {
     }
 
     signingConfigs {
-        release {
+        config {
             keyAlias 'MobPush'
             keyPassword '123456'
             storeFile file('FluuterMobPush.jks')

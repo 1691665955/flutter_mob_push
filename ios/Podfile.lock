@@ -1,0 +1,42 @@
+PODS:
+  - Flutter (1.0.0)
+  - mob_pushsdk (3.0.2):
+    - mob_pushsdk/MobPush (= 3.0.2)
+    - MOBFoundation
+  - mob_pushsdk/MobPush (3.0.2):
+    - MOBFoundation
+  - MOBFoundation (3.2.25)
+  - mobpush_plugin (1.0.7):
+    - Flutter
+    - mob_pushsdk
+  - shared_preferences (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - mobpush_plugin (from `.symlinks/plugins/mobpush_plugin/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+
+SPEC REPOS:
+  trunk:
+    - mob_pushsdk
+    - MOBFoundation
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  mobpush_plugin:
+    :path: ".symlinks/plugins/mobpush_plugin/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  mob_pushsdk: 9d391d6c12e1bd718d70fd9edcd972af3d6ca663
+  MOBFoundation: eaeb2e9e26a4155fa931020fb275d83445da0e09
+  mobpush_plugin: 7b5a56692c538bc06e0386916cf7b21f77c1eb09
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.9.1
